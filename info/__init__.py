@@ -6,7 +6,13 @@ from flask_session import Session
 
 from config import config_dict
 
+from redis import StrictRedis
+
+from config import Config
+
 db = SQLAlchemy()
+
+redis_store=StrictRedis(host=Config.REDIS_HOST,port=Config.REDIS_PORT)
 
 import logging
 
@@ -33,4 +39,6 @@ def create_app(config_name):
 
     from info.modules.news import news_blue
     app.register_blueprint(news_blue)
+    from info.modules.passport import passport_blue
+    app.register_blueprint(passport_blue)
     return app
