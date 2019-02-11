@@ -8,15 +8,10 @@ from flask_migrate import Migrate,MigrateCommand
 
 from flask_session import Session
 
-from redis import StrictRedis
+from config import config_dict
+
 app=Flask(__name__)
-app.config['SECRET_KEY']='pr2fPX72RfUAMJEMA+u7pUILxC9CYcjFUY9JiPjA3111hKkETyZiYw=='
-app.config['SESSION_TYPE']='redis'
-app.config['SESSION_REDIS']=StrictRedis(host='127.0.0.1',port=6379)
-app.config['SESSION_USE_SINGER']=True
-app.config['PERMANENT_SESSION_LIFETIME']=86400
-app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:mysql@localhost/info22'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+app.config.from_object(config_dict('development'))
 Session(app)
 db=SQLAlchemy(app)
 manage=Manager(app)
