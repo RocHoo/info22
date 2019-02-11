@@ -177,6 +177,38 @@ function sendSMSCode() {
     }
 
     // TODO 发送短信验证码
+
+    var params={
+        'mobile':mobile,
+        'image_code':imageCode,
+        'image_code_id':imageCodeId
+    }
+    $.ajax({
+        url:'/sms_code',
+        type:'post',
+        data:JSON.stringify(params),
+        contentType:'application/json',
+        success:function (resp) {
+            if(resp.errno=='0'){
+                var num=60;
+                var t=setInterval(function () {
+                    if (num==1){
+                        clearInterval(t);
+                        $('.get_code').html('点击获取验证码');
+                        $('.get_code').attr('onclick','sendSMSCode();');
+
+                    }else{
+                        num-=1;
+                        $('.get_code').html(num+'秒')
+                    }
+
+
+                },1000)
+            }else {
+                alert(resp.errmsg);
+            }
+        }
+    })
 }
 
 // 调用该函数模拟点击左侧按钮

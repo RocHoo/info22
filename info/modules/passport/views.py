@@ -10,7 +10,7 @@ from info import redis_store,constants
 
 import re,random
 
-from info.libs.yuntongxun import sms
+from info.libs.yuntongxun.sms import CCP
 
 @passport_blue.route('/image_code')
 def generate_image_code():
@@ -46,9 +46,9 @@ def send_sms_code():
         redis_store.delete('ImageCode_'+image_code_id)
     except Exception as e:
         current_app.logger.error(e)
-    if real_image_code != image_code:
+    if real_image_code.lower() != image_code.lower():
         return jsonify(errno=RET.DATAERR,errmsg='图片验证码错误')
-    sms_code='%06d'%random.randint(0,999999)
+    sms_code='%06d' % random.randint(0,999999)
     try:
         redis_store.setex('SMSCode_'+mobile,constants.SMS_CODE_REDIS_EXPIRES,sms_code)
     except Exception as e:

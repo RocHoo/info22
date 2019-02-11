@@ -12,7 +12,7 @@ from config import Config
 
 db = SQLAlchemy()
 
-redis_store=StrictRedis(host=Config.REDIS_HOST,port=Config.REDIS_PORT)
+redis_store=StrictRedis(host=Config.REDIS_HOST,port=Config.REDIS_PORT,decode_responses=True)
 
 import logging
 
